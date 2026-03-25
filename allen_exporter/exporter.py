@@ -156,7 +156,7 @@ def write_blank(
 ) -> Dict:
     return {
         "first_frame_idx": frame_counter,
-        "image_name": "blank",
+        "stimulus_name": "blank",
         "image_size": image_size,
         "modality": "blank",
         "tier": "blank",
@@ -181,7 +181,7 @@ def stimuli_export(
     frame_rate = float(stimuli["end_frame"].iloc[-1] / stimuli["end_time"].iloc[-1])
     os.makedirs(output_dir, exist_ok=True)
     write_yaml(
-        {"modality": "screen", "frame_rate": frame_rate, "image_names": True},
+        {"modality": "screen", "frame_rate": frame_rate, "use_stimuli_names": True},
         os.path.join(output_dir, "meta.yml"),
     )
 
@@ -269,9 +269,9 @@ def stimuli_export(
         if is_string and "im" in image_name:
             img_data = {
                 col: row[col]
-                for col in ["image_name", "duration", "stimulus_block_name"]
+                for col in ["duration", "stimulus_block_name"]
             } | {
-                "image_name": image_name,
+                "stimulus_name": image_name,
                 "modality": "image",
                 "file_format": file_format_img,
                 "encoded": compressed,
@@ -323,7 +323,7 @@ def stimuli_export(
             mv_size = movie_shapes[movie_name] 
 
             mv_data = {
-                "image_name": movie_name,
+                "stimulus_name": movie_name,
                 "modality": "video",
                 "file_format": file_format_mv,
                 "tier": tier,
